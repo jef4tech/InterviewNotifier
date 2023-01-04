@@ -60,7 +60,9 @@ class CustomDialog(Id: InterviewList) : DialogFragment() {
 
         binding.buttonAdd.setOnClickListener{
             submitJob()
-
+        }
+        binding.buttonDismiss.setOnClickListener{
+            dialog?.dismiss()
         }
         return root
 

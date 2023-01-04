@@ -64,6 +64,7 @@ class GalleryFragment : Fragment() {
             context?.let { showToast("submit job", it) }
         val interviewData = InterviewList(company,location,jobType,salaryRange,null)
         galleryViewModel.insert(interviewData)
+
         } else{
             context?.let { showToast(validation_result, it) }
         }

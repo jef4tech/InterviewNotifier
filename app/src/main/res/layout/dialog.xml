@@ -28,35 +28,37 @@
 
     <Spinner
         android:id="@+id/spinner_location"
+        style="@style/Widget.AppCompat.Spinner.DropDown"
         android:layout_width="match_parent"
         android:layout_height="24dp"
+        android:layout_marginTop="16dp"
         android:entries="@array/spinner_values"
-        style="@style/Widget.AppCompat.Spinner.DropDown"
-        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edCompanyName"/>
+        app:layout_constraintTop_toBottomOf="@id/edCompanyName" />
+
     <Spinner
         android:id="@+id/spinner_type"
+        style="@style/Widget.AppCompat.Spinner.DropDown"
         android:layout_width="match_parent"
         android:layout_height="24dp"
+        android:layout_marginTop="16dp"
         android:entries="@array/spinner_values"
-        style="@style/Widget.AppCompat.Spinner.DropDown"
-        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/spinner_location"/>
+        app:layout_constraintTop_toBottomOf="@id/spinner_location" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edSalaryRange"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner_type"
-        app:layout_constraintVertical_bias="0.13">
+        app:layout_constraintVertical_bias="0.0">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -71,13 +73,24 @@
         android:id="@+id/buttonAdd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="24dp"
         android:text="Update Interview"
         android:textColor="@color/white"
         app:backgroundTint="@color/teal_200"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edSalaryRange" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonDismiss"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="DISMISS"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/teal_200"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonAdd" />
 
 
 
