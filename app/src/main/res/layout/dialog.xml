@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/greenish"
     tools:context=".ui.gallery.GalleryFragment">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -68,6 +69,45 @@
             android:padding="20dp" />
 
     </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/edInterview"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edSalaryRange"
+        app:layout_constraintVertical_bias="0.13">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="DATE OF INTERVIEW"
+                android:inputType="textPersonName"
+                android:padding="20dp"
+                android:text="00/00/00"
+                />
+            <ImageView
+                android:id="@+id/edAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@android:drawable/ic_menu_add"
+                />
+
+        </LinearLayout>
+
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonAdd"
@@ -79,7 +119,7 @@
         app:backgroundTint="@color/teal_200"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edSalaryRange" />
+        app:layout_constraintTop_toBottomOf="@id/edInterview" />
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonDismiss"
         android:layout_width="match_parent"

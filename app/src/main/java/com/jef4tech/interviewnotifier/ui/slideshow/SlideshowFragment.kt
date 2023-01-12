@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
+import com.jef4tech.interviewnotifier.R
 import com.jef4tech.interviewnotifier.databinding.FragmentSlideshowBinding
 
 class SlideshowFragment : Fragment() {
@@ -27,7 +29,7 @@ class SlideshowFragment : Fragment() {
 
         _binding = FragmentSlideshowBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
+        view?.let { Navigation.findNavController(it).navigate(R.id.action_nav_gallery_to_nav_home) }
 //        val textView: TextView = binding.textSlideshow
 //        slideshowViewModel.text.observe(viewLifecycleOwner) {
 //            textView.text = it

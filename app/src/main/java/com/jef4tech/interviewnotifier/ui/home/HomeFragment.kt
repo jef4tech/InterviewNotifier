@@ -1,28 +1,43 @@
 package com.jef4tech.interviewnotifier.ui.home
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.graphics.Color
+import android.os.Build
+import android.os.Build.VERSION_CODES
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jef4tech.interviewnotifier.InterviewApplication
+import com.jef4tech.interviewnotifier.R
 import com.jef4tech.interviewnotifier.adapters.InterviewAdapter
 import com.jef4tech.interviewnotifier.databinding.FragmentHomeBinding
 import com.jef4tech.interviewnotifier.models.InterviewList
 import com.jef4tech.interviewnotifier.ui.CustomDialog
 import com.jef4tech.interviewnotifier.ui.gallery.GalleryViewModel
 import com.jef4tech.interviewnotifier.ui.gallery.GalleryViewModelFactory
+import com.jef4tech.interviewnotifier.utils.AndroidAlarmScheduler
+import com.jef4tech.interviewnotifier.utils.Extension
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private lateinit var interviewAdapter:InterviewAdapter
+    private lateinit var scheduler:AndroidAlarmScheduler
     private val galleryViewModel:GalleryViewModel by viewModels {
         GalleryViewModelFactory((activity?.application as InterviewApplication).repository)
     }
+
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -35,6 +50,7 @@ class HomeFragment : Fragment() {
 
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+         scheduler = AndroidAlarmScheduler(requireActivity().applicationContext)
         val root: View = binding.root
         setupUI()
         setupRecyclerView()
@@ -59,16 +75,13 @@ class HomeFragment : Fragment() {
         if (type==0){
             galleryViewModel.deleteJob(Id)
 
-        }else{
+        }else if(type == 1){
 //            galleryViewModel.updateJobs(Id)
             showDialog(Id)
+        }else{
+            scheduler.schedule()
         }
-//        val bundle= Bundle()
-//        bundle.putInt("fixtureid",Id.fixture.id)
-//        bundle.putString("homeTeam", Id.teams.home.name)
-//        bundle.putString("awayTeam",Id.teams.away.name)
-//        view?.let { Navigation.findNavController(it).navigate(R.id.action_navigation_home_to_navigation_statistic,bundle) }
-    }
+ }
 
     private fun showDialog(Id: InterviewList) {
         val dialog = CustomDialog(Id)
@@ -79,4 +92,5 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }

@@ -31,12 +31,16 @@ inner class InterviewViewHolder(val custombind:InterviewAdapterBinding):Recycler
         holder.custombind.companyName.text=job.companyName
         holder.custombind.placeName.text=job.location
         holder.custombind.jobType.text=job.jobType
+        holder.custombind.dateScheduled.text=job.Date
         holder.custombind.delete.setOnClickListener{
             listener.invoke(job,0)
 //            Extension.showToast("delete",holder.custombind.company.context)
         }
         holder.custombind.edit.setOnClickListener{
             listener.invoke(job,1)
+        }
+        holder.custombind.alarm.setOnClickListener {
+            listener.invoke(job,2)
         }
     }
 

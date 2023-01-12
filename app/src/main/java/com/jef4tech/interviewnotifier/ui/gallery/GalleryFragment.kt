@@ -8,11 +8,15 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.jef4tech.interviewnotifier.InterviewApplication
 import com.jef4tech.interviewnotifier.databinding.FragmentGalleryBinding
 import com.jef4tech.interviewnotifier.models.InterviewList
 import com.jef4tech.interviewnotifier.utils.Extension.isValidInput
 import com.jef4tech.interviewnotifier.utils.Extension.showToast
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class GalleryFragment : Fragment() {
 
@@ -20,6 +24,11 @@ class GalleryFragment : Fragment() {
 //    private lateinit var galleryViewModel:GalleryViewModel
     private var location_spinner = arrayOf("THRISSUR", "KOCHI", "BANGLORE")
     private var jobType_spinner = arrayOf("HYBRID","WORK FROM OFFICE","WORK FROM HOME")
+//    val builder = MaterialDatePicker.Builder.datePicker()
+    val datePicker:MaterialDatePicker<Long> = MaterialDatePicker.Builder.datePicker()
+    .setInputMode(MaterialDatePicker.INPUT_MODE_CALENDAR).setTitleText("SELECT DATE OF INTERVIEW")
+    .build()
+//    val picker = builder.build()
     private val galleryViewModel:GalleryViewModel by viewModels {
         GalleryViewModelFactory((activity?.application as InterviewApplication).repository)
     }
@@ -49,6 +58,15 @@ class GalleryFragment : Fragment() {
         binding.buttonAdd.setOnClickListener{
             submitJob()
         }
+
+        binding.edAdd.setOnClickListener{
+            datePicker.show(requireFragmentManager(),datePicker.toString())
+        }
+        datePicker.addOnPositiveButtonClickListener {
+            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val date = sdf.format(it)
+            binding.edDate.setText(date)
+        }
         return root
 
 //        submitJob()
@@ -59,11 +77,13 @@ class GalleryFragment : Fragment() {
         val location = binding.spinnerLocation.selectedItem.toString()
         val jobType = binding.spinnerType.selectedItem.toString()
         val salaryRange = binding.edSalaryRange.editText?.text.toString().trim()
-        val validation_result = validation(location,jobType,salaryRange,company)
+        val date = binding.edDate.text.toString().trim()
+        val validation_result = validation(location,jobType,salaryRange,company,date)
         if (validation_result=="good"){
             context?.let { showToast("submit job", it) }
-        val interviewData = InterviewList(company,location,jobType,salaryRange,null)
+        val interviewData = InterviewList(company,location,jobType,salaryRange,date,null)
         galleryViewModel.insert(interviewData)
+            view?.let { Navigation.findNavController(it).navigate(com.jef4tech.interviewnotifier.R.id.action_nav_gallery_to_nav_home) }
 
         } else{
             context?.let { showToast(validation_result, it) }
@@ -71,12 +91,21 @@ class GalleryFragment : Fragment() {
 
     }
 
-    private fun validation(location: String, jobType: String, salaryRange: String, company: String):String {
+    private fun validation(
+        location: String,
+        jobType: String,
+        salaryRange: String,
+        company: String,
+        date: String
+    ):String {
         if (!isValidInput(location)){
-            return "location is empty"
+            return "Location is Empty"
         }
         if (!isValidInput(company)){
-            return "company is empty"
+            return "Enter a Company Name"
+        }
+        if(date=="00/00/00"){
+            return "Enter a Valid Date"
         }
         return "good"
     }

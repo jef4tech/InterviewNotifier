@@ -17,6 +17,8 @@ data class InterviewList(
     var jobType : String,
     @ColumnInfo(name = "salaryrange")
     var salaryRange : String,
+    @ColumnInfo(name = "date")
+    var Date : String,
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id") var id: Long?,
 

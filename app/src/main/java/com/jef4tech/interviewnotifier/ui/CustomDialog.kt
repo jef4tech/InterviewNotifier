@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.jef4tech.interviewnotifier.InterviewApplication
 import com.jef4tech.interviewnotifier.databinding.DialogBinding
 import com.jef4tech.interviewnotifier.models.InterviewList
@@ -16,6 +17,8 @@ import com.jef4tech.interviewnotifier.ui.gallery.GalleryViewModelFactory
 import com.jef4tech.interviewnotifier.utils.Extension
 import com.jef4tech.interviewnotifier.utils.Extension.isValidInput
 import com.jef4tech.interviewnotifier.utils.Extension.showToast
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class CustomDialog(Id: InterviewList) : DialogFragment() {
 
@@ -27,7 +30,9 @@ class CustomDialog(Id: InterviewList) : DialogFragment() {
     private val galleryViewModel: GalleryViewModel by viewModels {
         GalleryViewModelFactory((activity?.application as InterviewApplication).repository)
     }
-
+    val datePicker: MaterialDatePicker<Long> = MaterialDatePicker.Builder.datePicker()
+        .setInputMode(MaterialDatePicker.INPUT_MODE_CALENDAR).setTitleText("SELECT DATE OF INTERVIEW")
+        .build()
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -44,6 +49,7 @@ class CustomDialog(Id: InterviewList) : DialogFragment() {
 
         binding.edCompanyName.editText?.setText(interviewList.companyName)
         binding.edSalaryRange.editText?.setText(interviewList.salaryRange)
+        binding.edDate.setText(interviewList.Date)
         val location = interviewList.location
         val type = interviewList.jobType
         val location_adapter = context?.let { ArrayAdapter(it, R.layout.simple_spinner_item, location_spinner) }
@@ -64,6 +70,15 @@ class CustomDialog(Id: InterviewList) : DialogFragment() {
         binding.buttonDismiss.setOnClickListener{
             dialog?.dismiss()
         }
+
+        binding.edAdd.setOnClickListener{
+            datePicker.show(requireFragmentManager(),datePicker.toString())
+        }
+        datePicker.addOnPositiveButtonClickListener {
+            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val date = sdf.format(it)
+            binding.edDate.setText(date)
+        }
         return root
 
     }
@@ -83,10 +98,12 @@ class CustomDialog(Id: InterviewList) : DialogFragment() {
         val location = binding.spinnerLocation.selectedItem.toString()
         val jobType = binding.spinnerType.selectedItem.toString()
         val salaryRange = binding.edSalaryRange.editText?.text.toString().trim()
+        val date = binding.edDate.text.toString().trim()
         val validation_result = validation(location,jobType,salaryRange,company)
         if (validation_result=="good"){
             context?.let { showToast("submit job", it) }
-        val interviewData = InterviewList(company,location,jobType,salaryRange,interviewList.id)
+        val interviewData = InterviewList(company,location,jobType,salaryRange,date,interviewList
+            .id)
         galleryViewModel.updateJobs(interviewData)
             dialog?.dismiss()
         } else{
